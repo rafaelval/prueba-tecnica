@@ -42,7 +42,9 @@ const ProductList: React.FC = () => {
       )
       .sort((a: IProduct, b: IProduct) => {
         if (sortBy === "creacion") {
-          return new Date(a.creacion).getTime() - new Date(b.creacion).getTime();
+          return (
+            new Date(a.creacion).getTime() - new Date(b.creacion).getTime()
+          );
         }
         if (typeof a[sortBy] === "string") {
           return (a[sortBy] as string).localeCompare(b[sortBy] as string);
@@ -52,7 +54,7 @@ const ProductList: React.FC = () => {
   }, [products, filterName, sortBy]);
 
   return (
-    <Box sx={{ maxWidth: "1300px", mx: "auto"}}>
+    <Box sx={{ maxWidth: "1300px", mx: "auto" }}>
       <Typography
         variant="h5"
         gutterBottom
@@ -81,11 +83,10 @@ const ProductList: React.FC = () => {
         <FormControl size="small" sx={{ minWidth: 200 }}>
           <InputLabel>Ordenar por</InputLabel>
           <Select
+            data-testid="selector"
             value={sortBy}
             label="Ordenar por"
-            onChange={(e) =>
-              setSortBy(e.target.value as keyof IProduct)
-            }
+            onChange={(e) => setSortBy(e.target.value as keyof IProduct)}
           >
             <MenuItem value="nombre">Nombre</MenuItem>
             <MenuItem value="cantidad">Cantidad</MenuItem>
@@ -102,12 +103,24 @@ const ProductList: React.FC = () => {
           <Table sx={{ minWidth: 900 }} size="small">
             <TableHead>
               <TableRow>
-                <TableCell><b>Código</b></TableCell>
-                <TableCell><b>Nombre</b></TableCell>
-                <TableCell><b>Descripción</b></TableCell>
-                <TableCell><b>Cantidad</b></TableCell>
-                <TableCell><b>Creación</b></TableCell>
-                <TableCell align="center"><b>Acción</b></TableCell>
+                <TableCell>
+                  <b>Código</b>
+                </TableCell>
+                <TableCell>
+                  <b>Nombre</b>
+                </TableCell>
+                <TableCell>
+                  <b>Descripción</b>
+                </TableCell>
+                <TableCell>
+                  <b>Cantidad</b>
+                </TableCell>
+                <TableCell>
+                  <b>Creación</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>Acción</b>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

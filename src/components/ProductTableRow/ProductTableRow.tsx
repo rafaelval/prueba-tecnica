@@ -8,7 +8,10 @@ interface ProductTableRowProps {
   onDelete: (codigo: number) => void;
 }
 
-const ProductTableRow: React.FC<ProductTableRowProps> = ({ product, onDelete }) => {
+const ProductTableRow: React.FC<ProductTableRowProps> = ({
+  product,
+  onDelete,
+}) => {
   return (
     <TableRow sx={{ height: "38px" }}>
       <TableCell>{product.codigo}</TableCell>
@@ -18,6 +21,7 @@ const ProductTableRow: React.FC<ProductTableRowProps> = ({ product, onDelete }) 
       <TableCell>{new Date(product.creacion).toLocaleString()}</TableCell>
       <TableCell align="center">
         <IconButton
+          data-testid={`delete_button_${product.codigo}`}
           color="error"
           size="small"
           onClick={() => onDelete(product.codigo)}

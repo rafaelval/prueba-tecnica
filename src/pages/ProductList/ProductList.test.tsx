@@ -1,50 +1,78 @@
-// import { render, screen } from "@testing-library/react";
-// import { Provider } from "react-redux";
-// import ProductList from "./ProductList";
-// import { getAllProducts } from "../../store/actions";
-// import { store } from "../../store/store";
-// import { useDispatch } from "react-redux";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import ProductList from "./ProductList";
+import { thunk } from "redux-thunk";
+import configureMockStore from "redux-mock-store";
+import { GlobalState } from "../../store/global-state.interface";
 
-// jest.mock("react-redux", () => ({
-//   ...jest.requireActual("react-redux"),
-//   useDispatch: jest.fn(),
-// }));
+let initialState: GlobalState = { products: [] };
 
-// describe("Componente ProductList", () => {
-//   afterEach(() => {
-//     jest.clearAllMocks();
-//   });
- 
-//   test("muestra un mensaje cuando no hay productos", () => {
-//     render(
-//       <Provider store={store}>
-//         <ProductList />
-//       </Provider>
-//     );
+const middlewares: any = [thunk];
+const mockStoreConfigure = configureMockStore(middlewares);
+let store = mockStoreConfigure({ ...initialState });
 
-//     expect(
-//       screen.getByText(/No hay productos disponibles/i)
-//     ).toBeInTheDocument();
-//   });
+const mockDispatch = jest.fn();
+store.dispatch = mockDispatch;
 
-//   test("renders product cards when products are available", () => {
+const productsTest = [
+  {
+    codigo: 10,
+    nombre: "Producto A",
+    descripcion: "Descripción A",
+    cantidad: 12,
+    creacion: new Date(),
+  },
+  {
+    codigo: 2,
+    nombre: "Producto B",
+    descripcion: "Descripción B",
+    cantidad: 12,
+    creacion: new Date(),
+  },
+];
 
-//     render(
-//       <Provider store={store}>
-//         <ProductList />
-//       </Provider>
-//     );
+describe("Componente ProductList", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-//     expect(screen.getByText(/Lista de Productos/i)).toBeInTheDocument();
-//   });
+  test("muestra un mensaje cuando no hay productos", () => {
+    render(
+      <Provider store={store}>
+        <ProductList />
+      </Provider>
+    );
 
-//   test("dispatches getAllProducts on mount", () => {
-//     const dispatch = jest.fn();
-//     jest.spyOn(require("react-redux"), "useDispatch").mockReturnValue(dispatch);
+    expect(
+      screen.getByText(/No hay productos disponibles/i)
+    ).toBeInTheDocument();
+  });
 
-//     render(<ProductList />);
+  test("renders product cards when products are available", () => {
+    initialState = { ...initialState, products: productsTest };
+    store = mockStoreConfigure({ ...initialState });
+    render(
+      <Provider store={store}>
+        <ProductList />
+      </Provider>
+    );
 
-//     expect(dispatch).toHaveBeenCalledWith(getAllProducts());
-//   });
-// });
-export{}
+    expect(screen.getByText(/Lista de Productos/i)).toBeInTheDocument();
+    expect(screen.getByText(/Producto A/i)).toBeInTheDocument();
+    expect(screen.getByText(/Producto B/i)).toBeInTheDocument();
+  });
+
+  test("Debe permitir borrar un producto", () => {
+    initialState = { ...initialState, products: productsTest };
+    store = mockStoreConfigure({ ...initialState });
+    jest.spyOn(store, "dispatch");
+    render(
+      <Provider store={store}>
+        <ProductList />
+      </Provider>
+    );
+    const deleteButtons = screen.getByTestId("delete_button_10");
+    fireEvent.click(deleteButtons);
+    expect(store.dispatch).toHaveBeenCalled();
+  });
+});
