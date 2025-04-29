@@ -18,7 +18,7 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
-          {/* <Route path="/create-product" element={<CreateProduct />} /> */}
+          <Route path="/create-product" element={<CreateProduct />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

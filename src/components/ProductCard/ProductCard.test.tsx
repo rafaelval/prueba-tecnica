@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import ProductCard from './ProductCard';
-import { Product } from '../../types/product';
+import { IProduct } from '../../store/global-state.interface';
 
 describe('ProductCard', () => {
-  const product: Product = {
+  const product: IProduct = {
     codigo: 1,
     nombre: 'Producto 1',
     descripcion: 'Una descripción',

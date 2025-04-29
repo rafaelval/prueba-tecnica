@@ -23,6 +23,11 @@ const reducer = (state = initialState, action: ActionTypes): GlobalState => {
       return {
         ...state
       };
+      case "REMOVE_PRODUCT":
+  return {
+    ...state,
+    products: state.products.filter((product) => product.codigo !== Number(action.payload)),
+  };
     default:
       return state;
   }

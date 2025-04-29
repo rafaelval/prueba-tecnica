@@ -15,4 +15,9 @@ export interface SearchProduct {
   payload: string;
 }
 
-export type ActionTypes = GetProducts | AddProduct | SearchProduct;
+export interface deleteProduct {
+  type: "REMOVE_PRODUCT";
+  payload: string;
+}
+
+export type ActionTypes = GetProducts | AddProduct | SearchProduct | deleteProduct;

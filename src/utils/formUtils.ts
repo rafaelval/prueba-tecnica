@@ -1,6 +1,6 @@
-import { Product } from "../types/product";
+import { IProduct } from "../store/global-state.interface";
 
-export function createProductFromForm(formState: any): Product {
+export function createProductFromForm(formState: any): IProduct {
   return {
     codigo: Number(formState.codigo),
     nombre: formState.nombre,

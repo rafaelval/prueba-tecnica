@@ -4,15 +4,15 @@ import CreateProduct from './CreateProduct';
 describe('CreateProduct', () => {
   const mockAddProduct = jest.fn();
 
-  beforeEach(() => {
-    render(<CreateProduct onAddProduct={mockAddProduct} />);
-  });
+  // beforeEach(() => {
+  //   render(<CreateProduct addProduct={mockAddProduct} />);
+  // });
 
   it('debe llenar y enviar el formulario correctamente', () => {
-    fireEvent.change(screen.getByLabelText(/Código/i), { target: { value: '123' } });
+    fireEvent.change(screen.getByLabelText(/Código/i), { target: { value: 123 } });
     fireEvent.change(screen.getByLabelText(/Nombre/i), { target: { value: 'Producto Test' } });
     fireEvent.change(screen.getByLabelText(/Descripción/i), { target: { value: 'Descripción Test' } });
-    fireEvent.change(screen.getByLabelText(/Cantidad/i), { target: { value: '5' } });
+    fireEvent.change(screen.getByLabelText(/Cantidad/i), { target: { value: 5 } });
 
     fireEvent.click(screen.getByRole('button', { name: /Crear/i }));
 

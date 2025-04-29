@@ -1,37 +1,49 @@
 import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
 import ProductList from "./ProductList";
-import { Product } from "../../types/product";
+import { getAllProducts } from "../../store/actions";
+import { store } from "../../store/store";
+import { useDispatch } from "react-redux";
 
-describe("ProductList", () => {
-  const products: Product[] = [
-    {
-      codigo: 1,
-      nombre: "Producto A",
-      descripcion: "Desc A",
-      cantidad: 5,
-      creacion: new Date(),
-    },
-    {
-      codigo: 2,
-      nombre: "Producto B",
-      descripcion: "Desc B",
-      cantidad: 10,
-      creacion: new Date(),
-    },
-  ];
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useDispatch: jest.fn(),
+}));
 
-  it("debe renderizar la lista de productos", () => {
-    render(<ProductList products={products} />);
-
-    expect(screen.getByText(/Producto A/i)).toBeInTheDocument();
-    expect(screen.getByText(/Producto B/i)).toBeInTheDocument();
+describe("Componente ProductList", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
   });
-
-  it("debe mostrar mensaje cuando no hay productos", () => {
-    render(<ProductList products={[]} />);
+ 
+  test("muestra un mensaje cuando no hay productos", () => {
+    render(
+      <Provider store={store}>
+        <ProductList />
+      </Provider>
+    );
 
     expect(
       screen.getByText(/No hay productos disponibles/i)
     ).toBeInTheDocument();
+  });
+
+  test("renders product cards when products are available", () => {
+
+    render(
+      <Provider store={store}>
+        <ProductList />
+      </Provider>
+    );
+
+    expect(screen.getByText(/Lista de Productos/i)).toBeInTheDocument();
+  });
+
+  test("dispatches getAllProducts on mount", () => {
+    const dispatch = jest.fn();
+    jest.spyOn(require("react-redux"), "useDispatch").mockReturnValue(dispatch);
+
+    render(<ProductList />);
+
+    expect(dispatch).toHaveBeenCalledWith(getAllProducts());
   });
 });

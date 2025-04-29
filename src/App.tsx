@@ -1,32 +1,38 @@
-import { useEffect, useState } from 'react';
-import { Container, Divider } from '@mui/material';
-import { Product } from './types/product';
-// import CreateProduct from './pages/CreateProduct/CreateProduct';
+import { Container, AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 import ProductList from './pages/ProductList/ProductList';
-import { getAllProducts } from './store/actions';
-import { useDispatch } from 'react-redux';
-
+import CreateProduct from './pages/CreateProduct/CreateProduct';
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  // const handleAddProduct = (product: Product) => {
-  //   setProducts((prev) => [...prev, product]);
-  // };
-  const dispatch = useDispatch<any>()
   
+  const [showList, setShowList] = useState(true); // alternar vista
 
-  useEffect(() => {
-    dispatch(getAllProducts())
-  }, [])
-  
+  const toggleView = () => setShowList(!showList);
 
   return (
-    <Container maxWidth="sm" sx={{ paddingTop: 4 }}>
-      {/* <CreateProduct onAddProduct={handleAddProduct} />
-      <Divider sx={{ marginY: 4 }} /> */}
-      <ProductList products={products} />
-    </Container>
+    <>
+      {/* Encabezado */}
+      <AppBar position="static" color="primary">
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h5">
+            {showList ? "Lista de Productos" : "Crear Producto"}
+          </Typography>
+          <Button color="inherit" onClick={toggleView}>
+            {showList ? "Crear Producto" : "Ver Productos"}
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      {/* Contenido */}
+      <Container maxWidth="sm" sx={{ paddingTop: 4 }}>
+        {showList ? (
+          <ProductList/>
+        ) : (
+          <CreateProduct />
+        )}
+      </Container>
+    </>
   );
 }
 

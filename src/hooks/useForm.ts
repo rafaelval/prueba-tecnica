@@ -8,10 +8,11 @@ export function useForm<T extends Object>(initialForm: T) {
   };
 
   const onInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = target;
+    const { name, value, type } = target;
+
     setFormState({
       ...formState,
-      [name]: value,
+      [name]: type === "number" ? Number(value) : value,
     });
   };
 

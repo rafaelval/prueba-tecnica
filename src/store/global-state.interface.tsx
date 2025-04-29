@@ -6,6 +6,6 @@ export interface IProduct {
   codigo: number;
   nombre: string;
   descripcion: string;
-  cantidad: string;
-  creacion: string;
+  cantidad: number;
+  creacion: Date;
 }
