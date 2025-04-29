@@ -1,5 +1,4 @@
 import { Container, AppBar, Toolbar, Typography, Button } from "@mui/material";
-import { useSelector } from "react-redux";
 import { useState } from "react";
 import ProductList from './pages/ProductList/ProductList';
 import CreateProduct from './pages/CreateProduct/CreateProduct';
@@ -12,8 +11,7 @@ function App() {
 
   return (
     <>
-      {/* Encabezado */}
-      <AppBar position="static" color="primary">
+        <AppBar position="static" color="primary" sx={{ borderRadius: 3}}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h5">
             {showList ? "Lista de Productos" : "Crear Producto"}
@@ -25,7 +23,7 @@ function App() {
       </AppBar>
 
       {/* Contenido */}
-      <Container maxWidth="sm" sx={{ paddingTop: 4 }}>
+      <Container maxWidth="xl" sx={{ paddingTop: 4 }}>
         {showList ? (
           <ProductList/>
         ) : (
